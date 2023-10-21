@@ -1,0 +1,14 @@
+.homep{
+
+    display: flex;
+    flex-direction: column;
+    background-image:  url("../../Imagen/Imagen93.jpg");
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 98vh;
+    top: 68px;
+    overflow: hidden;
+
+  }
