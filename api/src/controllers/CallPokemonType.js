@@ -3,25 +3,34 @@ const URL = "https://pokeapi.co/api/v2/type"
 const {Type} = require("../db")
 
 const pokemonType = async (req, res) => {
-
     try {
-        const typesInDB = await Type.findAll();
 
-        if (typesInDB.length === 0) {
-                // Si la base de datos está vacía, obtener tipos de la API y guardar en la base de datos
-                const infoUrl = await axios.get(URL)
-                const typesFromAPI = infoUrl.data.results;
-                    console.log(typesFromAPI)
-            await Type.bulkCreate(typesFromAPI);
-        }
+ 
+        const petTypes = await axios.get(URL);
+        const TypePokemon = petTypes.data.results.map((type) => {
+          return {
+            name: type.name,
+          };
+        });
     
-             // Obtener tipos desde la base de datos
+        const createPromises = TypePokemon.map(async (eleme) => {
+          try {
+            await Type.findOrCreate({
+              where: {
+                name: eleme.name,
+              },
+            });
+          } catch (error) {
+            console.error(`Error creating type: ${eleme.name}`, error);
+          }
+        });
     
-            //  const allTypes = await Type.findAll();
-            //  res.status(200).json(allTypes);
-    } catch (error) {
-        res.status(500).send('SERVER ERROR');
+        await Promise.all(createPromises);
+    
+        return { message: "Types created or already exist in the database." };
+      } catch (error) {
+        console.error({ error: "No types available on Data Base" });
+      }
     }
-}
 
 module.exports = { pokemonType }

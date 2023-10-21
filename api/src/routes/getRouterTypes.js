@@ -12,7 +12,7 @@ router.get("/", async(req,res)=>{
        
     } catch (error) {
         res.status(400).send(error.toString())
-        console.log(e, "Error en el controller getTypes");
+        console.log(error, "Error nose crea el Type de Pokemon");
     }
 })
 module.exports=router;

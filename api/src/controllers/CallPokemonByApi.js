@@ -2,6 +2,8 @@ const axios = require ("axios");
 
 const urlApi = "https://pokeapi.co/api/v2/pokemon"
 
+"https://pokeapi.co/api/v2/pokemon?offset=0&limit=40"
+
 const allpokemonapi = async () => {
     try {
         const allpokemon = await axios.get(urlApi); //! llamamos a la api por axios 
@@ -12,15 +14,15 @@ const allpokemonapi = async () => {
             allpokename.map(async nameind => {
                 const info = await axios.get (nameind.url)
                 return{
-                    ID:info.data.id,
-                    Nombre:info.data.name,
-                    Vida: info.data.stats[0].base_stat,
-                    Ataque: info.data.stats[1].base_stat,
-                    Defensa: info.data.stats[2].base_stat,
-                    Velocidad: info.data.stats[5].base_stat,
-                    Altura: info.data.height,
-                    Peso: info.data.weight,
-                    Imagen: info.data.sprites.other.dream_world.front_default,
+                    id:info.data.id,
+                    name:info.data.name,
+                    hp: info.data.stats[0].base_stat,
+                    attack: info.data.stats[1].base_stat,
+                    defense: info.data.stats[2].base_stat,
+                    speed: info.data.stats[5].base_stat,
+                    height: info.data.height,
+                    weight: info.data.weight,
+                    image: info.data.sprites.other.dream_world.front_default,
                     types: info.data.types.map((type) => type.type.name),
                 }
             } )

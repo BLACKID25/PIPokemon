@@ -1,8 +1,8 @@
 const { Router } = require('express');
 const { pokemonAll } = require("../controllers/CallAllPokemon")
 const {createNewPokemon} = require("../controllers/CallNewPokemon")
-const { Card_pokemon, Type } = require("../db") //* importamos los modelos
-const urlApi = "https://pokeapi.co/api/v2/pokemon"
+// const { Card_pokemon, Type } = require("../db") //* importamos los modelos
+// const urlApi = "https://pokeapi.co/api/v2/pokemon"
 const router = Router()
 
 //? 1 era Ruta GET /pokemons para obtener la información de los pokemons
@@ -37,7 +37,7 @@ router.get('/:id', async (req, res) => {
         //!consultamos el Id en la Base de Datos
        
     if (id) {
-        const okPokemon = await allpokemon.filter((ele)=> ele.ID==id)
+        const okPokemon = await allpokemon.filter((ele)=> ele.id==id)
         if(okPokemon.length>0){
             return res.status(200).json(okPokemon)
         } else { 
@@ -59,7 +59,7 @@ router.get('/', async (req, res) => {
     try {
         //! requerimos por nombre con un filter
         if (name) {
-             const pokemonsDB = await allpokemon.filter((ele) => ele.Nombre === name.toLowerCase())
+             const pokemonsDB = await allpokemon.filter((ele) => ele.name === name.toLowerCase())
   
              if (pokemonsDB.length > 0) {
                 //! Si se encontraron pokemons en la base de datos, se utilizan esos
@@ -71,8 +71,8 @@ router.get('/', async (req, res) => {
             //! si no hay nada que enviar entonces mandar todos los registros
             return res.status(200).json(allpokemon)
         }
-    } catch (e) {
-            return res.status(400).json({e:"No se logra extraer la información"})
+    } catch (error) {
+            return res.status(400).json({error:"No se logra extraer la información"})
             }
 });
 
@@ -83,9 +83,9 @@ router.get('/', async (req, res) => {
 router.post("/", async(req,res)=>{
     try {
         await createNewPokemon(req.body) //! llamamos la funcion donde creamos nuestro pokemon
-        return res.status(200).json('Se creo correctamente')
+        res.status(200).json('You pokemon has be created successfully')
     } catch (error) {
-        return res.status(400).json({e:"No se crea nuevo Pokemon"})
+        return res.status(400).json({error:"No se logra crea nuevo Pokemon"})
     }
 })
 

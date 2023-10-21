@@ -1,29 +1,29 @@
 const axios = require ("axios");
-const { Card_pokemon, Type} = require("../db")
-const imagendefault = '../Imagen/ImagenGenerica.jpg'
+const { Pokemon, Type} = require("../db")
+
 
 const createNewPokemon = async (info) =>{
-    const newPokemon = await Card_pokemon.create({
-    Nombre: info.name,
-    Vida: info.hp,
-    Ataque: info.attack,
-    Defensa: info.defense,
-    Velocidad: info.speed,
-    Altura: info.height,
-    Peso: info.weight,
-    Imagen: info.image
-      ? info.image // si tiene imagen se utiliza
-      : imagendefault, // si no imagen subida por defecto
+    const newPokemon = await Pokemon.create({
+    name: info.name,
+    hp: info.hp,
+    attack: info.attack,
+    defense: info.defense,
+    speed: info.speed,
+    height: info.height,
+    weight: info.weight,
+    image: info.img
+      ? info.img // si tiene imagen se utiliza
+      :"https://i.pinimg.com/564x/de/58/96/de589691fd5c9850a6671a2f5456afba.jpg", // si no imagen subida por defecto
       
   });
-    // Buscar los tipos en la base de datos
-    const foundTypes = await Type.findAll({
-      where: {
-        name: info.types
-      }
-    });
+    // // Buscar los tipos en la base de datos
+    // const foundTypes = await Type.findAll({
+    //   where: {
+    //     Nombre: info.types
+    //   }
+    // });
 
     // Relacionar el pokemon con los tipos encontrados
-    await newPokemon.addTypes(foundTypes);
+    newPokemon.addType(info.types);;
 }
 module.exports = { createNewPokemon }

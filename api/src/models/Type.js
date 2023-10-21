@@ -3,7 +3,7 @@ module.exports = (sequelize) => {
   sequelize.define(
     "Type",
     {
-      ID: {
+      id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
